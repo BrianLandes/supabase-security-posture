@@ -1,0 +1,27 @@
+# The posture leaky.sql was meant to have. Each mistake in the SQL should
+# produce exactly one family of findings against this.
+schemas: [public]
+issuePattern: '^SEC-\d+$'
+
+roles:
+  guest:
+    inherits: anon
+    tables:
+      rooms: [select, update]
+    functions:
+      join_room: joining a room by its id
+
+tables:
+  notes: scoped
+  countries: public-read
+  api_keys: internal
+  audit_log: internal
+  comments: { kind: scoped, reason: authors write their own comments }
+  rooms: scoped
+  # drafts is deliberately missing.
+  dropped_table: scoped
+
+functions:
+  my_notes: { scope: self, reason: the caller's own notes }
+  whoami: { scope: self, reason: returns auth.uid() }
+  join_room: { scope: membership, reason: joins the caller to a room, openIssue: BUG-1 }

@@ -1,0 +1,55 @@
+{
+  "name": "supabase-security-posture",
+  "version": "0.1.0",
+  "description": "Fail CI when a Supabase table, policy, grant or SECURITY DEFINER function drifts from the security posture you declared.",
+  "keywords": [
+    "supabase",
+    "postgres",
+    "rls",
+    "row-level-security",
+    "security",
+    "ci",
+    "security-definer"
+  ],
+  "license": "MIT",
+  "author": "Brian Landes",
+  "type": "module",
+  "bin": {
+    "supabase-security-posture": "dist/cli.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "pg": "^8.23.1",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/pg": "^8.23.1",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrianLandes/supabase-security-posture.git"
+  },
+  "homepage": "https://github.com/BrianLandes/supabase-security-posture#readme",
+  "bugs": {
+    "url": "https://github.com/BrianLandes/supabase-security-posture/issues"
+  }
+}
