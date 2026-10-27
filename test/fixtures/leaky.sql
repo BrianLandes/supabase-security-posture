@@ -79,7 +79,7 @@ CREATE FUNCTION public.my_notes() RETURNS SETOF public.notes
 REVOKE ALL ON FUNCTION public.my_notes() FROM public, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.my_notes() TO authenticated;
 
--- The GOB-481 shape: "locked down" with REVOKE FROM PUBLIC, which leaves the
+-- The classic shape: "locked down" with REVOKE FROM PUBLIC, which leaves the
 -- default grant to anon in place.
 CREATE FUNCTION public.whoami() RETURNS uuid
   LANGUAGE sql STABLE SECURITY DEFINER SET search_path = ''
