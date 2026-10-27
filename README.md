@@ -24,13 +24,13 @@ Fix the migration, not the config, unless the new posture is deliberate. Then cl
 
 ## Why this exists
 
-This was built for a production Flutter + Supabase app, after audits there found:
+This was built for [GobbleGo](https://gobblego.com), a Flutter + Supabase app for picking a restaurant with friends, after audits of its production database found:
 
 - **116 `SECURITY DEFINER` functions callable by anyone with the anon key.** Every one had been "locked down" with `REVOKE ALL ... FROM PUBLIC`. That doesn't work on Supabase, because new functions in `public` are granted to `anon` and `authenticated` by name, and revoking `PUBLIC` leaves those grants in place.
 - **Three tables readable by anyone.** One was the user directory. Each one came from a permissive default nobody noticed: a `USING (true)` policy, or a new table still carrying Supabase's default grants to `anon`.
 - **Definer functions granted to exactly the right role whose bodies touched any user's rows.** The grant was fine, but the function trusted a user id it was handed.
 
-A one-off audit goes stale with the next migration. Run as a test, it stays true. This is that test, pulled out of the app so any Supabase project can use it.
+A one-off audit goes stale with the next migration. Run as a test, it stays true. This is that test, pulled out of the app so any Supabase project can use it. GobbleGo's CI runs it on every push against 84 tables and 139 client-callable definer functions. On its first run there, it found 8 definer functions the app's own test had never required anyone to classify, because that test only looked at what signed-in users could call.
 
 ## Quick start
 
